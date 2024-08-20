@@ -1,0 +1,2 @@
+require("silas")
+print("hello")
