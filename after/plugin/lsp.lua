@@ -15,7 +15,7 @@ local lsp_attach = function(client, bufnr)
   vim.keymap.set('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<cr>', opts)
   vim.keymap.set('n', '<F2>', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
   vim.keymap.set({'n', 'x'}, '<F3>', '<cmd>lua vim.lsp.buf.format({async = true})<cr>', opts)
-  vim.keymap.set('n', '<F4>', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
+  vim.keymap.set('n', '<leader>f', '<cmd>lua vim.lsp.buf.code_action()<cr>', opts)
 end
 
 lsp_zero.extend_lspconfig({
@@ -27,16 +27,29 @@ lsp_zero.extend_lspconfig({
 -- These are just examples. Replace them with the language
 -- servers you have installed in your system
 require('lspconfig').clangd.setup({})
-
-
+require('lspconfig').lua_ls.setup({
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      diagnostics = { globals = {'vim'} },
+      workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+      telemetry = { enable = false }
+    }
+  }
+})
 ---
 -- Autocompletion setup
+--- 
 ---
+
 local cmp = require('cmp')
 
 cmp.setup({
   sources = {
     {name = 'nvim_lsp'},
+    { name = 'path' },     -- File paths
+    { name = 'buffer' },   -- Current buffer words
+    { name = 'luasnip' },  -- Snippets (if installed)
   },
   snippet = {
     expand = function(args)
@@ -44,5 +57,12 @@ cmp.setup({
       vim.snippet.expand(args.body)
     end,
   },
-  mapping = cmp.mapping.preset.insert({}),
+ -- mapping = cmp.mapping.preset.insert({}),
+ mapping = {
+ ['<Space>y'] = cmp.mapping.confirm({ select = true }),
+    ['<Up>'] = cmp.mapping.select_prev_item(),
+    ['<Down>'] = cmp.mapping.select_next_item(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
+ },
 })

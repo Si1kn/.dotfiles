@@ -84,6 +84,11 @@ _G.packer_plugins = {
     path = "/home/Silas/.local/share/nvim/site/pack/packer/start/catppuccin",
     url = "https://github.com/catppuccin/nvim"
   },
+  ["cmake-tools.nvim"] = {
+    loaded = true,
+    path = "/home/Silas/.local/share/nvim/site/pack/packer/start/cmake-tools.nvim",
+    url = "https://github.com/Civitasv/cmake-tools.nvim"
+  },
   ["cmp-nvim-lsp"] = {
     loaded = true,
     path = "/home/Silas/.local/share/nvim/site/pack/packer/start/cmp-nvim-lsp",
